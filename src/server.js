@@ -20,6 +20,25 @@ const io = socketio(server);
  
 io.on('connection',(socket)=>{
     console.log('a user connected.',socket.id)
+
+        // listening messege from the client side --> using socket.on
+        
+    socket.on('from_client',()=>{
+        console.log("event comming from client.")
+    })
+
+
+    // sever  (to)---> client 
+    setInterval(() => {
+        socket.emit('from_server');
+    }, 2000);
+
+
+
+
+
+
+
 });
 
 // const socket = io();  paste this in scrip.js which is using in the index.html
