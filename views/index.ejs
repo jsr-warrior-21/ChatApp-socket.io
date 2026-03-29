@@ -9,6 +9,12 @@
 </head>
 <body class="light-theme">
 
+    <% if (typeof isNew !== 'undefined' && isNew) { %>
+        <script>
+            setTimeout(() => alert("New Room Created! Share Room ID and Password with friends."), 500);
+        </script>
+    <% } %>
+
     <div class="top-logo-area">
         <div class="brand-logo">Talk<span>ify</span></div>
     </div>
@@ -22,7 +28,7 @@
                         <h2 class="room-title">Room: <%=id%></h2>
                         <div class="status-bar">
                             <span class="online-indicator"></span>
-                            <span id="user-count">...</span>
+                            <span id="user-count">... online</span>
                         </div>
                     </div>
                 </div>
@@ -30,18 +36,14 @@
             
             <div class="header-right">
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <span id="typing">typing...</span>
+                    <span id="typing" style="visibility: hidden; font-size: 0.75rem; color: var(--accent); font-style: italic;">typing...</span>
                     
                     <button onclick="clearChat()" class="clear-btn" title="Clear Chat">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                     </button>
 
                     <a href="/" title="Exit Room" class="clear-btn" style="text-decoration: none; display: flex; align-items: center;">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                            <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
-                        </svg>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>
                     </a>
 
                     <div id="theme-toggle" onclick="toggleTheme()" class="clear-btn" style="cursor: pointer;">
@@ -56,21 +58,20 @@
                 <li class="msg-bubble" data-user="<%= chats[i].user %>" ondblclick="likeMsg(this)">
                     <span class="user-name"><%= chats[i].user %></span>
                     <% if (chats[i].image) { %>
-                        <img src="<%= chats[i].image %>" class="chat-image" />
+                        <img src="<%= chats[i].image %>" class="chat-image" style="max-width: 100%; border-radius: 10px; margin-top: 5px;" />
                     <% } else { %>
                         <p class="content"><%= chats[i].content %></p>
                     <% } %>
                     <div class="msg-footer">
                         <small class="time"><%= chats[i].createdAt ? new Date(chats[i].createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '10:00 AM' %></small>
                     </div>
-                    <div class="heart">❤️</div>
+                    <div class="heart" style="position: absolute; display: none; font-size: 2rem; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">❤️</div>
                 </li>
             <% } %>
         </ul>
 
         <div class="input-area">
             <input id="startchat" type="hidden" data-roomId="<%=id%>">
-            
             <input type="hidden" id="username" value="<%= userName %>">
             
             <div class="msg-input-group">
@@ -102,22 +103,28 @@
         const roomId = "<%=id%>";
         const userCountDisp = document.getElementById("user-count");
 
+        // Theme Toggle Logic
         function toggleTheme() {
-            const b = document.body;
+            document.body.classList.toggle('dark-theme');
             const icon = document.getElementById('theme-icon');
-            b.classList.toggle('dark-theme');
-            if(b.classList.contains('dark-theme')) {
-                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            if(document.body.classList.contains('dark-theme')) {
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>';
             } else {
                 icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
             }
         }
+
+        // Emoji & UI Handlers
         function toggleEmojiPicker() { document.getElementById('emoji-picker').classList.toggle('active'); }
         function addEmoji(e) { inputMsg.value += e; inputMsg.focus(); toggleEmojiPicker(); }
         document.addEventListener('click', (e) => { if (!e.target.closest('.emoji-container')) document.getElementById('emoji-picker').classList.remove('active'); });
         
-        function clearChat() { if(confirm("Delete history?")) socket.emit('clear_all_chats', { roomId }); }
-        function likeMsg(el) { const h = el.querySelector('.heart'); h.style.display = 'block'; setTimeout(() => h.style.display = 'none', 800); }
+        function clearChat() { if(confirm("Clear history for everyone?")) socket.emit('clear_all_chats', { roomId }); }
+        function likeMsg(el) { 
+            const h = el.querySelector('.heart'); 
+            h.style.display = 'block'; 
+            setTimeout(() => h.style.display = 'none', 800); 
+        }
         
         function alignMessages() {
             const myName = usernameInput.value.trim();
@@ -135,33 +142,38 @@
             }
         }
 
+        // Socket Events
         socket.emit('join_room', { roomId });
         socket.on('room_stats', (data) => { userCountDisp.innerText = `${data.count} online`; });
         socket.on('chat_cleared', () => { msgList.innerHTML = ""; });
 
         btn.onclick = () => {
-            if(!inputMsg.value || !usernameInput.value) return;
+            if(!inputMsg.value.trim() || !usernameInput.value) return;
             socket.emit("msg_send", { msg: inputMsg.value, username: usernameInput.value, roomId: roomId });
             inputMsg.value = "";
         };
+
+        // Keyboard Enter Support
+        inputMsg.addEventListener("keypress", (e) => { if (e.key === "Enter") btn.click(); });
 
         socket.on("msg_rcvd", (data) => {
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             let li = document.createElement("li");
             li.className = 'msg-bubble fade-in';
             li.setAttribute('data-user', data.username);
-            let inner = data.img ? `<img src="${data.img}" class="chat-image" />` : `<p class="content">${data.msg}</p>`;
-            li.innerHTML = `<span class="user-name">${data.username}</span>${inner}<div class="msg-footer"><small class="time">${time}</small>${data.username === usernameInput.value ? '<span class="ticks">✓✓</span>' : ''}</div><div class="heart">❤️</div>`;
+            let inner = data.img ? `<img src="${data.img}" class="chat-image" style="max-width: 100%; border-radius: 10px; margin-top: 5px;" />` : `<p class="content">${data.msg}</p>`;
+            li.innerHTML = `<span class="user-name">${data.username}</span>${inner}<div class="msg-footer"><small class="time">${time}</small>${data.username === usernameInput.value ? '<span class="ticks">✓✓</span>' : ''}</div><div class="heart" style="position: absolute; display: none; font-size: 2rem; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;">❤️</div>`;
             msgList.appendChild(li); 
             alignMessages(); 
             msgList.scrollTop = msgList.scrollHeight;
         });
 
+        // Typing Indicator Logic
         inputMsg.addEventListener('input', () => socket.emit('typing', { roomId }));
         socket.on('someone_typing', () => {
             const t = document.getElementById("typing");
             t.style.visibility = 'visible';
-            setTimeout(() => t.style.visibility = 'hidden', 1500);
+            setTimeout(() => t.style.visibility = 'hidden', 2000);
         });
 
         window.onload = () => { 
