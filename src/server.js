@@ -1,14 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path"); // 1. Added the built-in path module
-
+const connect = require('../config/database-cofig')
 const app = express();
 const PORT = process.env.PORT || 3000; // 2. Added a fallback in case PORT is undefined
 /**
  * path.join correctly handles the "step back" from /src to the root folder
  * then moves forward into /public.
  */
-
 //setting up socketio from here
 
 const http = require("http");
@@ -48,14 +47,15 @@ io.on("connection", (socket) => {
 });
 
 // const socket = io();  paste this in scrip.js which is using in the index.html
-
 // ----> after pasting you will see that every time when any one going on that localhost endpoint from any browser on same machin you will see a new id will be created(see in the console.)
 
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
 //-----> IMP---> here we will use server.listen instead of app.listen because of socket.io
-server.listen(PORT, () => {
+server.listen(PORT, async() => {
   console.log(`Server Started On The PORT : ${PORT}`);
+  await connect();
+  console.log('MongoDB connected.')
 });
 
 /**
