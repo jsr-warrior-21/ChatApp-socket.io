@@ -355,6 +355,7 @@ header {
         left: 50%;
         transform: translateX(-50%);
         padding: 6px 14px;
+        margin-top: 10px;
     }
 
     .brand-logo {
