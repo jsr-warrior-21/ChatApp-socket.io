@@ -12,13 +12,15 @@
         <div class="brand-logo">Talk<span>ify</span></div>
     </div>
 
-    <div class="chat-container" style="max-width: 400px; height: auto; padding: 40px; text-align: center;">
+    <div class="chat-container" style="max-width: 400px; height: auto; padding: 40px; text-align: center; margin: 0 auto;">
         <h2 style="color: var(--accent); margin-bottom: 20px;">Join Chat Room</h2>
         
         <form action="/join" method="POST">
+            <input type="text" name="username" placeholder="Your Name" class="name-box" required style="margin-bottom: 15px;">
+            
             <input type="text" name="roomId" placeholder="Enter Room ID (e.g. 1)" class="name-box" required style="margin-bottom: 15px;">
             
-            <input type="password" name="password" placeholder="Password (1234)" class="name-box" required style="margin-bottom: 20px;">
+            <input type="password" name="password" placeholder="Password" class="name-box" required style="margin-bottom: 20px;">
             
             <button type="submit" id="btn" style="width: 100%; border-radius: 12px; color: white; font-weight: bold; height: 50px; cursor: pointer;">
                 JOIN NOW

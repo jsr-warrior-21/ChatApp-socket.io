@@ -58,40 +58,38 @@ io.on("connection", (socket) => {
 app.set('view engine', 'ejs');
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
-// Routes
+// --- ROUTES ---
+
+// 1. Join Page
 app.get('/', (req, res) => { res.render('join'); });
 
+// 2. Join Form Submit (Naam aur Room ID handle karna)
 app.post('/join', (req, res) => {
-    const { roomId, password } = req.body;
-    const SECRET_PASS = "1234"; // Yahan apna password set karein
+    const { roomId, password, username } = req.body;
+    const SECRET_PASS = "1234"; 
+    
     if (password === SECRET_PASS) {
-        res.redirect(`/chat/${roomId}`);
+        // Encode username to handle spaces and special characters
+        res.redirect(`/chat/${roomId}?name=${encodeURIComponent(username)}`);
     } else {
         res.send("<script>alert('Galat Password!'); window.location='/';</script>");
     }
 });
 
+// 3. Chat Room Page
 app.get('/chat/:roomId', async (req, res) => {
-    const chats = await Chat.find({ roomId: req.params.roomId }).sort({ createdAt: 1 });
-    res.render('index', { id: req.params.roomId, chats: chats });
-});
-
-// Ye route form se data lega aur redirect karega
-app.post('/join', (req, res) => {
-    const { roomId, password } = req.body;
-    if (password === "1234") {
-        // Yeh line dost ko seedha chat room mein bhej degi
-        res.redirect(`/chat/${roomId}`);
-    } else {
-        res.send("<script>alert('Galat Password!'); window.location='/';</script>");
+    try {
+        const chats = await Chat.find({ roomId: req.params.roomId }).sort({ createdAt: 1 });
+        // URL query se 'name' uthana
+        res.render('index', { 
+            id: req.params.roomId, 
+            chats: chats, 
+            userName: req.query.name || "Guest" 
+        });
+    } catch (err) {
+        res.status(500).send("Database Error");
     }
 });
-
-
-
-
-
-
 
 server.listen(PORT, async () => {
     await connect();

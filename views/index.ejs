@@ -19,7 +19,7 @@
                 <div class="header-info">
                     <div class="avatar" style="background: linear-gradient(135deg, #00a884, #00d0a4) !important;">$</div>
                     <div class="user-details">
-                        <h2>Room: <%=id%></h2>
+                        <h2 class="room-title">Room: <%=id%></h2>
                         <div class="status-bar">
                             <span class="online-indicator"></span>
                             <span id="user-count">...</span>
@@ -70,7 +70,8 @@
 
         <div class="input-area">
             <input id="startchat" type="hidden" data-roomId="<%=id%>">
-            <input type="text" id="username" placeholder="Your Name..." class="name-box" oninput="alignMessages()">
+            
+            <input type="hidden" id="username" value="<%= userName %>">
             
             <div class="msg-input-group">
                 <div class="emoji-container">
@@ -114,12 +115,17 @@
         function toggleEmojiPicker() { document.getElementById('emoji-picker').classList.toggle('active'); }
         function addEmoji(e) { inputMsg.value += e; inputMsg.focus(); toggleEmojiPicker(); }
         document.addEventListener('click', (e) => { if (!e.target.closest('.emoji-container')) document.getElementById('emoji-picker').classList.remove('active'); });
+        
         function clearChat() { if(confirm("Delete history?")) socket.emit('clear_all_chats', { roomId }); }
         function likeMsg(el) { const h = el.querySelector('.heart'); h.style.display = 'block'; setTimeout(() => h.style.display = 'none', 800); }
+        
         function alignMessages() {
             const myName = usernameInput.value.trim();
-            document.querySelectorAll('.msg-bubble').forEach(b => b.classList.toggle('sent', myName && b.getAttribute('data-user') === myName));
+            document.querySelectorAll('.msg-bubble').forEach(b => {
+                b.classList.toggle('sent', myName && b.getAttribute('data-user') === myName);
+            });
         }
+
         function sendImage(input) {
             const file = input.files[0];
             if (file && usernameInput.value) {
@@ -128,14 +134,17 @@
                 reader.readAsDataURL(file);
             }
         }
+
         socket.emit('join_room', { roomId });
         socket.on('room_stats', (data) => { userCountDisp.innerText = `${data.count} online`; });
         socket.on('chat_cleared', () => { msgList.innerHTML = ""; });
+
         btn.onclick = () => {
             if(!inputMsg.value || !usernameInput.value) return;
             socket.emit("msg_send", { msg: inputMsg.value, username: usernameInput.value, roomId: roomId });
             inputMsg.value = "";
         };
+
         socket.on("msg_rcvd", (data) => {
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             let li = document.createElement("li");
@@ -143,15 +152,22 @@
             li.setAttribute('data-user', data.username);
             let inner = data.img ? `<img src="${data.img}" class="chat-image" />` : `<p class="content">${data.msg}</p>`;
             li.innerHTML = `<span class="user-name">${data.username}</span>${inner}<div class="msg-footer"><small class="time">${time}</small>${data.username === usernameInput.value ? '<span class="ticks">✓✓</span>' : ''}</div><div class="heart">❤️</div>`;
-            msgList.appendChild(li); alignMessages(); msgList.scrollTop = msgList.scrollHeight;
+            msgList.appendChild(li); 
+            alignMessages(); 
+            msgList.scrollTop = msgList.scrollHeight;
         });
+
         inputMsg.addEventListener('input', () => socket.emit('typing', { roomId }));
         socket.on('someone_typing', () => {
             const t = document.getElementById("typing");
             t.style.visibility = 'visible';
             setTimeout(() => t.style.visibility = 'hidden', 1500);
         });
-        window.onload = () => { alignMessages(); msgList.scrollTop = msgList.scrollHeight; };
+
+        window.onload = () => { 
+            alignMessages(); 
+            msgList.scrollTop = msgList.scrollHeight; 
+        };
     </script>
 </body>
 </html>
