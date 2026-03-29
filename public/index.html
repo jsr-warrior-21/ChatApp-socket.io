@@ -1,21 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>chat app</title>
-</head>
-<body>
-    <h1>Chat App Using Sockets.</h1>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Chat App Using Sockets.</h1>
+      <!-- here client is sending messege -->
+      <input type="text" id="newmsg" />
+      <button id="btn">send</button>
+      <ul id="msglist"></ul>
 
-    <!-- here client is sending messege -->
-
-     <button id="btn">click me</button>
-
+    </main>
 
     <!--  import two line after setting up socketio -->
     <!-- ye io object dega socket io se apne aap -->
-    <script src="/socket.io/socket.io.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
