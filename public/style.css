@@ -365,7 +365,7 @@ header {
         width: 100%;
         max-width: 100%;
         height: calc(100vh - 90px);   /* fills screen more tightly */
-        margin:12px;
+        margin:12px 20px;
         border-radius: 16px;
     }
 
