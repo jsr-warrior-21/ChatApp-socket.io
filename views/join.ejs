@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Join Room - Secure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talkify | Join</title>
     <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="join-body">
-    <div class="join-card">
-        <h1> Secure Chat</h1>
+<body class="light-theme">
+    <div class="top-logo-area">
+        <div class="brand-logo">Talk<span>ify</span></div>
+    </div>
+
+    <div class="chat-container" style="max-width: 400px; height: auto; padding: 40px; text-align: center;">
+        <h2 style="color: var(--accent); margin-bottom: 20px;">Join Chat Room</h2>
+        
         <form action="/join" method="POST">
-            <input type="text" name="roomId" placeholder="Room ID" required>
-            <input type="password" name="password" placeholder="Room Password" required>
-            <button type="submit">Join Private Room</button>
+            <input type="text" name="roomId" placeholder="Enter Room ID (e.g. 1)" class="name-box" required style="margin-bottom: 15px;">
+            
+            <input type="password" name="password" placeholder="Password (1234)" class="name-box" required style="margin-bottom: 20px;">
+            
+            <button type="submit" id="btn" style="width: 100%; border-radius: 12px; color: white; font-weight: bold; height: 50px; cursor: pointer;">
+                JOIN NOW
+            </button>
         </form>
+        <p style="margin-top: 15px; font-size: 0.8rem; color: #888;">Enter same Room ID to chat together</p>
     </div>
 </body>
 </html>

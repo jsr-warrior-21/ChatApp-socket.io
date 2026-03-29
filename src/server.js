@@ -76,6 +76,23 @@ app.get('/chat/:roomId', async (req, res) => {
     res.render('index', { id: req.params.roomId, chats: chats });
 });
 
+// Ye route form se data lega aur redirect karega
+app.post('/join', (req, res) => {
+    const { roomId, password } = req.body;
+    if (password === "1234") {
+        // Yeh line dost ko seedha chat room mein bhej degi
+        res.redirect(`/chat/${roomId}`);
+    } else {
+        res.send("<script>alert('Galat Password!'); window.location='/';</script>");
+    }
+});
+
+
+
+
+
+
+
 server.listen(PORT, async () => {
     await connect();
     console.log(`Server on ${PORT} | MongoDB Connected.`);

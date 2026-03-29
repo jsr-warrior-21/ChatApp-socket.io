@@ -66,12 +66,26 @@ body::after {
     border: 1px solid rgba(255,255,255,0.4);
 }
 
-header { background: var(--header-bg); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+/* --- HEADER SECTION --- */
+header { 
+    background: var(--header-bg); 
+    padding: 15px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid var(--border); 
+}
+
 .header-info { display: flex; align-items: center; }
+
+/* Avatar Background (Fixed back to Greenish Gradient) */
 .avatar { 
-    width: 40px; height: 40px; background: linear-gradient(135deg, #00a884, #00d0a4);
-    color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-    font-weight: bold; margin-right: 12px; box-shadow: 0 4px 10px rgba(0, 168, 132, 0.2);
+    width: 40px; height: 40px; 
+    background: linear-gradient(135deg, #00a884, #00d0a4) !important;
+    color: white; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; 
+    font-weight: bold; margin-right: 12px; 
+    box-shadow: 0 4px 10px rgba(0, 168, 132, 0.2);
 }
 
 .status-bar { display: flex; align-items: center; gap: 6px; }
@@ -79,8 +93,32 @@ header { background: var(--header-bg); padding: 15px 20px; display: flex; justif
 #user-count { font-size: 0.75rem; color: #888; font-weight: 500; }
 #typing { font-size: 0.75rem; color: var(--accent); font-style: italic; visibility: hidden; margin-left: 5px; }
 
-#theme-toggle, .clear-btn { cursor: pointer; font-size: 1.3rem; background: none; border: none; opacity: 0.5; transition: 0.3s; }
-#theme-toggle:hover, .clear-btn:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
+/* Buttons Row Alignment (Single Line) */
+.header-right { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+#theme-toggle, .clear-btn { 
+    cursor: pointer; 
+    background: none; 
+    border: none; 
+    opacity: 0.5; 
+    transition: transform 0.2s ease, opacity 0.2s ease; 
+    color: inherit;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Hover par ghoomna (rotation) band, sirf zoom */
+#theme-toggle:hover, .clear-btn:hover { 
+    opacity: 1; 
+    transform: scale(1.1) !important; 
+    rotate: 0deg !important;
+}
 
 #msglist { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; list-style: none !important; scrollbar-width: none; }
 #msglist::-webkit-scrollbar { display: none; }
@@ -97,25 +135,14 @@ header { background: var(--header-bg); padding: 15px 20px; display: flex; justif
 .msg-input-group { display: flex; gap: 12px; align-items: center; }
 #newmsg { flex: 1; padding: 12px 20px; border-radius: 30px; border: none; outline: none; background: white; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
-/* --- EMOJI PICKER GRID UPDATE --- */
 .emoji-container { position: relative; display: flex; align-items: center; }
 .emoji-trigger { cursor: pointer; background: none; border: none; font-size: 1.4rem; opacity: 0.7; }
-
 .emoji-picker { 
-    position: absolute; bottom: 55px; left: 0; 
-    background: var(--header-bg); border: 1px solid var(--border); 
-    border-radius: 12px; padding: 12px; 
-    display: none; /* JS will toggle to grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
-    gap: 12px; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-    z-index: 100;
-    width: max-content;
+    position: absolute; bottom: 55px; left: 0; background: var(--header-bg); border: 1px solid var(--border); 
+    border-radius: 12px; padding: 12px; display: none; grid-template-columns: repeat(3, 1fr); gap: 12px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 100; width: max-content;
 }
-
-/* Logic to show grid */
 .emoji-picker.active { display: grid; }
-
 .emoji-picker span { font-size: 1.4rem; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; }
 .emoji-picker span:hover { transform: scale(1.3); }
 
@@ -130,4 +157,38 @@ header { background: var(--header-bg); padding: 15px 20px; display: flex; justif
     .top-logo-area { top: 15px; left: 15px; padding: 5px 12px; }
     .brand-logo { font-size: 1.3rem; }
     .chat-container { height: 80vh; margin-top: 50px; }
+}
+
+/* Milky white overrides for dark mode only */
+.dark-theme .clear-btn,
+.dark-theme #theme-toggle,
+.dark-theme .upload-btn,
+.dark-theme #typing,
+.dark-theme h2 {
+    color: #f5f5f7 !important;
+    /* background: rgba(245, 245, 247, 0.2) !important; */
+    backdrop-filter: blur(10px) !important;
+}
+
+.dark-theme .clear-btn:hover,
+.dark-theme #theme-toggle:hover,
+.dark-theme .upload-btn:hover {
+    /* background: rgba(245, 245, 247, 0.3) !important; */
+    color: #f5f5f7 !important;
+}
+
+/* Room header specifically */
+.dark-theme .user-details h2 {
+    color: #f5f5f7 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Typing animation - extra smooth milky effect */
+.dark-theme #typing {
+    color: #f5f5f7 !important;
+    text-shadow: 0 0 10px rgba(245, 245, 247, 0.5);
+    /* background: rgba(245, 245, 247, 0.15) !important; */
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
 }
