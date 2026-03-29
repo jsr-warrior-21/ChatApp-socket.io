@@ -1,100 +1,82 @@
 require("dotenv").config();
 const express = require("express");
-const path = require("path"); // 1. Added the built-in path module
-const connect = require('../config/database-cofig')
-const app = express();
-const PORT = process.env.PORT || 3000; // 2. Added a fallback in case PORT is undefined
-/**
- * path.join correctly handles the "step back" from /src to the root folder
- * then moves forward into /public.
- */
-//setting up socketio from here
-
+const path = require("path");
+const connect = require('../config/database-cofig');
 const http = require("http");
 const socketio = require("socket.io");
-const server = http.createServer(app); // here we are passing express app in server thats why i am calling in bottom server.listen()
-const io = socketio(server);
-
 const Chat = require('../models/chat');
 
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+const PORT = process.env.PORT || 3000;
+
+// Body parser for Join Form
+app.use(express.urlencoded({ extended: true }));
+
+let onlineUsers = {};
 
 io.on("connection", (socket) => {
-//   console.log("a user connected.", socket.id);
-
-socket.on('join_room',(data)=>{
-    socket.join(data.roomId);
-});
-
-
-
-
-  // listening messege from the client side --> using socket.on
-  // after that you will get msg what client has sent
-  socket.on("msg_send", async(data) => {
-    console.log(data);
-    const chat =  await Chat.create({
-        roomId:data.roomId,
-        user:data.username,
-        content:data.msg
+    socket.on('join_room', (data) => {
+        socket.join(data.roomId);
+        if (!onlineUsers[data.roomId]) onlineUsers[data.roomId] = 0;
+        onlineUsers[data.roomId]++;
+        io.to(data.roomId).emit('room_stats', { count: onlineUsers[data.roomId] });
     });
-    // socket.emit('msg_rcvd',data); // for everyone
-    // socket.broadcast.emit('msg_rcvd',data); // for every one except himself
-    io.to(data.roomId).emit("msg_rcvd", data); // here server sending same data to all connection on the socket for that we will write script in the script.js
-    // ---> IMP ---> means every one on that localhost will get this msg
-    // now you can vizualize that from one browser i am sending msg and on secnod browser also getting msg.
-    // so if deploy and same same link ko open krr rahe hai to tum paa sakte ho msg ek dusare ka
-    // lekin ek problem hai ki sbb log dekh sakte hai,
-  });
 
-  socket.on('typing',(data)=>{
-    socket.broadcast.to(data.roomId).emit('someone_typing');
-  });
+    socket.on("msg_send", async (data) => {
+        try {
+            await Chat.create({ 
+                roomId: data.roomId, 
+                user: data.username, 
+                content: data.msg || "", 
+                image: data.img || null 
+            });
+            io.to(data.roomId).emit("msg_rcvd", data);
+        } catch (err) { console.log(err); }
+    });
 
+    socket.on('clear_all_chats', async (data) => {
+        try {
+            await Chat.deleteMany({ roomId: data.roomId });
+            io.to(data.roomId).emit('chat_cleared');
+        } catch (err) { console.log(err); }
+    });
 
-  // socket.on('from_client',()=>{
-  //     console.log("event comming from client.")
-  // })
+    socket.on('typing', (data) => { socket.broadcast.to(data.roomId).emit('someone_typing'); });
 
-  // sever  (to)---> client
-
-  // setInterval(() => {
-  //     socket.emit('from_server');
-  // }, 2000);
-
-  // comment for the main app purpose
-
-  //you can send any kind of data
+    socket.on('disconnecting', () => {
+        for (const room of socket.rooms) {
+            if (onlineUsers[room]) {
+                onlineUsers[room]--;
+                io.to(room).emit('room_stats', { count: onlineUsers[room] });
+            }
+        }
+    });
 });
 
-// const socket = io();  paste this in scrip.js which is using in the index.html
-// ----> after pasting you will see that every time when any one going on that localhost endpoint from any browser on same machin you will see a new id will be created(see in the console.)
-
-
-app.set('view engine','ejs');
-
+app.set('view engine', 'ejs');
 app.use("/", express.static(path.join(__dirname, "..", "public")));
 
+// Routes
+app.get('/', (req, res) => { res.render('join'); });
 
-app.get('/chat/:roomId',async(req,res)=>{
-    const chats = await Chat.find({
-        roomId:req.params.roomId,
-    }).select('content');
-     console.log(chats);
-     res.render('index',{name:'arvind',id:req.params.roomId,chats:chats});
+app.post('/join', (req, res) => {
+    const { roomId, password } = req.body;
+    const SECRET_PASS = "1234"; // Yahan apna password set karein
+    if (password === SECRET_PASS) {
+        res.redirect(`/chat/${roomId}`);
+    } else {
+        res.send("<script>alert('Galat Password!'); window.location='/';</script>");
+    }
 });
 
-
-//-----> IMP---> here we will use server.listen instead of app.listen because of socket.io
-server.listen(PORT, async() => {
-  console.log(`Server Started On The PORT : ${PORT}`);
-  await connect();
-  console.log('MongoDB connected.')
+app.get('/chat/:roomId', async (req, res) => {
+    const chats = await Chat.find({ roomId: req.params.roomId }).sort({ createdAt: 1 });
+    res.render('index', { id: req.params.roomId, chats: chats });
 });
 
-/**
- * Ye confusion bohot common hai! Isko samajhne ka sabse asaan tareeka hai "Radio Station" ka example.
-
-io = Poora ka poora Radio Station (Sabhi users ke liye).
-
-socket = Ek Individual Radio (Sirf ek specific user ke liye).
- */
+server.listen(PORT, async () => {
+    await connect();
+    console.log(`Server on ${PORT} | MongoDB Connected.`);
+});

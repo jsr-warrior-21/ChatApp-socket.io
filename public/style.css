@@ -1,0 +1,133 @@
+:root {
+    --header-bg: #ffffff;
+    --chat-bg: rgba(255, 255, 255, 0.95);
+    --bubble-me: #dcf8c6;
+    --bubble-them: #ffffff;
+    --text-color: #111;
+    --input-bg: #f0f2f5;
+    --border: rgba(0,0,0,0.08);
+    --accent: #00a884;
+    --glass: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme {
+    --header-bg: #1f2c33;
+    --chat-bg: #0b141a;
+    --bubble-me: #005c4b;
+    --bubble-them: #202c33;
+    --text-color: #e9edef;
+    --input-bg: #2a3942;
+    --border: rgba(255,255,255,0.1);
+    --glass: rgba(0, 0, 0, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { 
+    height: 100vh; display: flex; justify-content: center; align-items: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(-45deg, #d1d7db, #e2e8f0, #cbd5e1, #d1d7db);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+    opacity: 0.05; z-index: 1;
+}
+
+body::after {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: var(--accent); z-index: 2;
+}
+
+.top-logo-area {
+    position: fixed; top: 30px; left: 40px; z-index: 100;
+    padding: 10px 20px; background: var(--glass); backdrop-filter: blur(10px);
+    border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.brand-logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1.5px; color: var(--accent); user-select: none; }
+.brand-logo span { color: var(--text-color); opacity: 0.8; }
+
+.chat-container { 
+    width: 95%; max-width: 500px; height: 85vh; 
+    background: var(--chat-bg); display: flex; flex-direction: column; 
+    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.2); 
+    border-radius: 20px; overflow: hidden; z-index: 10;
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+header { background: var(--header-bg); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.header-info { display: flex; align-items: center; }
+.avatar { 
+    width: 40px; height: 40px; background: linear-gradient(135deg, #00a884, #00d0a4);
+    color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+    font-weight: bold; margin-right: 12px; box-shadow: 0 4px 10px rgba(0, 168, 132, 0.2);
+}
+
+.status-bar { display: flex; align-items: center; gap: 6px; }
+.online-indicator { width: 9px; height: 9px; background: #25d366; border-radius: 50%; box-shadow: 0 0 8px #25d366; }
+#user-count { font-size: 0.75rem; color: #888; font-weight: 500; }
+#typing { font-size: 0.75rem; color: var(--accent); font-style: italic; visibility: hidden; margin-left: 5px; }
+
+#theme-toggle, .clear-btn { cursor: pointer; font-size: 1.3rem; background: none; border: none; opacity: 0.5; transition: 0.3s; }
+#theme-toggle:hover, .clear-btn:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
+
+#msglist { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; list-style: none !important; scrollbar-width: none; }
+#msglist::-webkit-scrollbar { display: none; }
+
+.msg-bubble { max-width: 80%; padding: 10px 15px; border-radius: 15px; background: var(--bubble-them); align-self: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.03); position: relative; color: var(--text-color); line-height: 1.4; }
+.msg-bubble.sent { align-self: flex-end; background: var(--bubble-me); border-bottom-right-radius: 4px; box-shadow: 0 4px 12px rgba(0, 168, 132, 0.1); }
+
+.user-name { font-size: 0.7rem; font-weight: 700; color: var(--accent); display: block; margin-bottom: 4px; }
+.msg-footer { display: flex; justify-content: flex-end; align-items: center; gap: 5px; margin-top: 5px; opacity: 0.6; font-size: 0.65rem; }
+
+.input-area { padding: 20px; background: var(--input-bg); border-top: 1px solid var(--border); }
+.name-box { width: 100%; padding: 10px 15px; margin-bottom: 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); outline: none; background: #fff; }
+
+.msg-input-group { display: flex; gap: 12px; align-items: center; }
+#newmsg { flex: 1; padding: 12px 20px; border-radius: 30px; border: none; outline: none; background: white; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+/* --- EMOJI PICKER GRID UPDATE --- */
+.emoji-container { position: relative; display: flex; align-items: center; }
+.emoji-trigger { cursor: pointer; background: none; border: none; font-size: 1.4rem; opacity: 0.7; }
+
+.emoji-picker { 
+    position: absolute; bottom: 55px; left: 0; 
+    background: var(--header-bg); border: 1px solid var(--border); 
+    border-radius: 12px; padding: 12px; 
+    display: none; /* JS will toggle to grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
+    gap: 12px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+    z-index: 100;
+    width: max-content;
+}
+
+/* Logic to show grid */
+.emoji-picker.active { display: grid; }
+
+.emoji-picker span { font-size: 1.4rem; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; }
+.emoji-picker span:hover { transform: scale(1.3); }
+
+#btn { background: var(--accent); border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0, 168, 132, 0.3); }
+
+.heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; display: none; animation: pop 0.8s ease; }
+@keyframes pop { 0% { transform: scale(0); opacity: 0; } 50% { opacity: 1; transform: scale(1.4); } 100% { opacity: 0; } }
+.fade-in { animation: slideIn 0.3s ease-out; }
+@keyframes slideIn { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+@media (max-width: 600px) {
+    .top-logo-area { top: 15px; left: 15px; padding: 5px 12px; }
+    .brand-logo { font-size: 1.3rem; }
+    .chat-container { height: 80vh; margin-top: 50px; }
+}

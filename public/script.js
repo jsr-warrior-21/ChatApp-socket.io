@@ -40,3 +40,5 @@ socket.on('msg_rcvd',(data)=>{
     limsg.innerText = data.msg;
     msgList.appendChild(limsg);
 });
+
+

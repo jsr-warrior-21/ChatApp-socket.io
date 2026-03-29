@@ -1,7 +1,9 @@
+require('dotenv').config();
 const mongoose =require('mongoose');
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const connect = async () =>{
-    mongoose.connect('mongodb+srv://jsrarvind12_db_user:arvindMongo21@cluster3.ijrgsvj.mongodb.net/?appName=Cluster3')
+    mongoose.connect(MONGODB_URI)
 }
 
 module.exports = connect;
