@@ -54,6 +54,15 @@ body {
     background-size: 20px 20px; /* Dots ke beech ka gap */
 }
 
+
+
+
+
+
+
+
+
+
 .dark-theme body {
     background-color: #0f172a;
     background-image: radial-gradient(#1e293b 1px, transparent 1px);
@@ -91,19 +100,30 @@ body::after {
     z-index: 2;
 }
 
-/* TOP LOGO AREA */
 .top-logo-area {
     position: fixed;
     top: 30px;
     left: 40px;
     z-index: 100;
-    padding: 10px 20px;
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 10px 22px;
+    background: rgba(255, 255, 255, 0.01) !important; 
+    backdrop-filter: blur(0.5px) !important;
+    -webkit-backdrop-filter: blur(0.5px);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: none !important;
 }
+
+@media (max-width: 480px) {
+    .top-logo-area {
+        top: 15px !important;
+        left: 20px !important;
+        background: transparent !important;
+        backdrop-filter: none !important; 
+        padding: 8px 16px !important;
+    }
+}
+
 
 .brand-logo {
     font-size: 1.8rem;
@@ -865,23 +885,42 @@ header {
     display: inline-block;
     background: var(--accent);
     color: white;
-    padding: clamp(14px, 5vw, 22px) clamp(32px, 8vw, 55px);
-    border-radius: clamp(25px, 6vw, 40px);
+    padding: 16px 40px;
+    border-radius: 35px;
     text-decoration: none;
     font-weight: 700;
-    font-size: clamp(1rem, 4vw, 1.25rem);
-    box-shadow: 0 12px 30px rgba(0,168,132,0.4);
-    transition: all 0.3s ease;
-    border: none;
-    white-space: nowrap;
+    font-size: 1.2rem;
     position: relative;
     z-index: 10;
+    transition: all 0.3s ease;
+    animation: pulse-green 2s infinite;
 }
 
 .cta-button:hover {
-    background: #008c72;
-    transform: translateY(-3px);
-    box-shadow: 0 20px 45px rgba(0,168,132,0.5);
+    transform: scale(1.05);
+    background: #008f6f;
+    box-shadow: 0 15px 30px rgba(0, 168, 132, 0.4);
+}
+
+.cta-button span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover span {
+    transform: translateX(5px);
+}
+
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(0, 168, 132, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 168, 132, 0);
+    }
 }
 
 /* ================= FEATURES ================= */
