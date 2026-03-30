@@ -48,6 +48,30 @@ body {
     100% { background-position: 0% 50%; }
 }
 
+body {
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px; /* Dots ke beech ka gap */
+}
+
+.dark-theme body {
+    background-color: #0f172a;
+    background-image: radial-gradient(#1e293b 1px, transparent 1px);
+}
+/* Dark mode ke liye halka sa dark pattern */
+.dark-theme body {
+    background-color: #0b141a;
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+    opacity: 0.8;
+}
+
+/* Dark Theme ke liye bhi sukoon wala dark pattern */
+.dark-theme body {
+    background-color: #0b141a;
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+    opacity: 0.9;
+}
+
 body::before {
     content: "";
     position: absolute;
@@ -87,6 +111,7 @@ body::after {
     letter-spacing: -1.5px;
     color: var(--accent);
     user-select: none;
+    text-decoration: underline;
 }
 
 .brand-logo span {
@@ -96,7 +121,10 @@ body::after {
 
 /* CHAT CONTAINER - FIXED */
 .chat-container { 
-    width: 95%;
+    width: 100%;
+    margin-left: 12px;
+    margin-right: 12px;
+
     max-width: 500px;
     height: calc(100vh - 40px);
     background: var(--chat-bg);
@@ -172,18 +200,32 @@ header {
 
 /* MESSAGE LIST */
 #msglist {
-    flex: 1 1 auto;
-    min-height: 0;
+    flex: 1;
     overflow-y: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 16px;
-    padding-bottom:20px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    list-style: none !important;
+    list-style: none;
     scrollbar-width: none;
+
+    background-color: #efe7dd; 
+    background-image: url("https://www.transparenttextures.com/patterns/subtle-dots.png");
+    
+    box-shadow: 
+        inset 0px 10px 20px rgba(0, 0, 0, 0.05),  
+        inset 0px -10px 20px rgba(0, 0, 0, 0.05),  
+        inset 5px 0px 10px rgba(0, 0, 0, 0.02);    
+    
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme #msglist {
+    background-color: #0b141a;
+    box-shadow: 
+        inset 0px 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0px -10px 30px rgba(0, 0, 0, 0.5);
 }
 #msglist::-webkit-scrollbar { display: none; }
 
@@ -326,8 +368,11 @@ header {
 .dark-theme .upload-btn,
 .dark-theme #typing,
 .dark-theme h2 {
-    color: #f5f5f7 !important;
+    color: #ffffff !important;
     backdrop-filter: blur(10px) !important;
+}
+.dark-theme .brand-logo span{
+   color: #111;
 }
 
 .dark-theme .clear-btn:hover,
@@ -554,7 +599,6 @@ header {
 
 
 /* CAMERA ICON IN CORNER - PERFECT */
-/* CAMERA ICON - PERFECT WORKING */
 .input-wrapper {
     position: relative;
     flex: 1;
@@ -624,20 +668,6 @@ header {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* CHAT IMAGE PERFECT DISPLAY */
 .chat-image {
     max-width: 200px !important;
@@ -677,12 +707,6 @@ header {
 
 
 
-
-
-
-
-
-
 /* Join Page Container */
 .join-container {
     background: var(--chat-bg);
@@ -715,19 +739,14 @@ header {
 
 /* Mobile Compact Mode - Hide Footer + Full Chat */
 @media (max-width: 480px) {
-    /* Hide footer completely *
-    /* Hide footer */
-    /* Hide footer */
     .app-footer { display: none !important; }
-    
-    /* FIXED Chat Container - No scroll issues */
     .chat-app,
     .chat-container {
         position: fixed !important;
-        top: 70px !important;  /* Below logo */
+        top: 70px !important; 
         left: 8px !important;
         right: 8px !important;
-        bottom: 90px !important;  /* Input space */
+        bottom: 90px !important;  
         height: auto !important;
         margin: 0 !important;
         border-radius: 25px 25px 0 0 !important;
@@ -761,10 +780,9 @@ header {
         flex: 1 !important;
     }
 
-    /* Compact input - always visible */
     .input-area {
         padding: 8px 12px !important;
-        margin-bottom: 20px;  /* Extra bottom space */
+        margin-bottom: 20px;  
     }
     
     /* Smaller elements */
@@ -775,5 +793,210 @@ header {
     
     header {
         padding: 10px 12px !important;
+    }
+}
+
+
+/* ================= BASE ================= */
+.landing-no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    scrollbar-width: none;
+}
+
+/* ================= LOGO ================= */
+.top-logo-area {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 10px);
+    left: 16px;
+    top: 16px;
+    z-index: 1000;
+    padding: 10px 18px;
+
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.brand-logo {
+    font-weight: 800;
+}
+
+/* ================= HERO ================= */
+.landing-hero {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: clamp(70px, 12vh, 120px) clamp(20px, 5vw, 40px) clamp(80px, 10vh, 110px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: clamp(18px, 4vh, 30px);
+}
+
+.landing-hero h1 {
+    font-size: clamp(2.2rem, 12vw, 4.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), #25d366);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.landing-hero p {
+    font-size: clamp(1rem, 4.5vw, 1.35rem);
+    color: var(--text-color);
+    opacity: 0.9;
+    max-width: clamp(350px, 60vw, 600px);
+    margin: 0;
+}
+
+/* ================= CTA ================= */
+.cta-button {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: clamp(14px, 5vw, 22px) clamp(32px, 8vw, 55px);
+    border-radius: clamp(25px, 6vw, 40px);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    box-shadow: 0 12px 30px rgba(0,168,132,0.4);
+    transition: all 0.3s ease;
+    border: none;
+    white-space: nowrap;
+    position: relative;
+    z-index: 10;
+}
+
+.cta-button:hover {
+    background: #008c72;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 45px rgba(0,168,132,0.5);
+}
+
+/* ================= FEATURES ================= */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 10px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.feature-card {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(18px);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.feature-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    color: var(--accent);
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+/* ================= FOOTER ================= */
+.landing-footer {
+    position: fixed;
+    bottom: clamp(10px, 3vh, 25px);
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    padding: clamp(8px, 2.5vh, 16px) 28px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+    z-index: 1000;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    white-space: nowrap;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 480px) {
+
+    .landing-no-scroll {
+        height: auto !important;
+        overflow: scroll !important;
+    }
+
+    /* LOGO FIXED */
+    .top-logo-area {
+        top: 14px !important;
+        left: 70px !important;
+        padding: 10px 18px !important;
+
+        background: rgba(255,255,255,0.6) !important;
+        backdrop-filter: blur(18px) !important;
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand-logo {
+        font-size: 1.45rem !important;
+        letter-spacing: -1.2px !important;
+    }
+
+    /* HERO */
+    .landing-hero {
+        padding: 70px 18px 80px !important;
+        gap: 16px !important;
+    }
+
+    .landing-hero h1 {
+        font-size: 2rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .landing-hero p {
+        font-size: 1rem !important;
+        line-height: 1.45 !important;
+        padding: 0 6px !important;
+    }
+
+    /* CTA */
+    .cta-button {
+        padding: 16px 34px !important;
+        font-size: 1.05rem !important;
+        border-radius: 26px !important;
+    }
+
+    /* STACK FEATURES */
+    .features {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .feature-card {
+        padding: 16px;
+    }
+
+    /* FOOTER MOBILE */
+    .landing-footer {
+        position: absolute !important;
+        bottom: 10px !important;
+        padding: 8px 18px !important;
     }
 }
