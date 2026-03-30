@@ -935,6 +935,10 @@ header {
     white-space: nowrap;
 }
 
+.landing-footer strong{
+   color: var(--accent);
+}
+
 /* ================= MOBILE ================= */
 @media (max-width: 480px) {
 
