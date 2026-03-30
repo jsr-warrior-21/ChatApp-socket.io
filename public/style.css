@@ -674,3 +674,37 @@ header {
 .dark-theme .chat-image {
     box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
 }
+
+
+
+
+
+
+
+
+
+/* Join Page Container */
+.join-container {
+    background: var(--chat-bg);
+    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.2); 
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    z-index: 10;
+    width: 95%;
+    max-width: 400px;
+    margin: 25px 20px;
+}
+
+/* Mobile Join Fix */
+@media (max-width: 480px) {
+    .join-container {
+        width: calc(100% - 40px) !important;
+        height: 480px !important;  /* Fixed height */
+        margin: 60px 20px 140px !important;
+        padding: 30px 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+}
