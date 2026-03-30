@@ -898,7 +898,7 @@ header {
     background: rgba(255,255,255,0.55);
     backdrop-filter: blur(18px);
     border-radius: 16px;
-    padding: 18px;
+    padding: 50px 18px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.2);
 }
@@ -994,7 +994,8 @@ header {
     }
 
     .feature-card {
-        padding: 16px;
+        margin: 7px;
+        padding: 40px 12px;
     }
 
     /* FOOTER MOBILE */
