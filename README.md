@@ -1,5 +1,7 @@
 # Talkify — Real-Time Private Messenger
 
+# Live Link [https://talkify-hpb2.onrender.com]
+
 Talkify is a high-performance, full-stack chat application designed for instant and secure communication. It eliminates the friction of traditional sign-up processes, allowing users to create private rooms and start chatting immediately.
 
 ## Key Features
